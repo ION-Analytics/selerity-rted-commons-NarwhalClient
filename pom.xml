@@ -127,4 +127,8 @@
         </snapshotRepository>
     </distributionManagement>
 
+    <scm>
+        <connection>scm:svn:https://selerity.unfuddle.com/svn/selerity_public/SeleritySyncAPI/Java/NarwhalClient</connection>
+    </scm>
+
 </project>

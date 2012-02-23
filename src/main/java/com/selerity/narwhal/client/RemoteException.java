@@ -10,29 +10,38 @@
  * removed from the software by any user thereof.
  */
 
-package com.selerity.narwhal.client.exceptions;
+package com.selerity.narwhal.client;
 
 /**
- * Exception making a Narwhal RPC call.
+ * Exception from the remote service.
  */
-public class RpcException extends Exception {
+public class RemoteException extends RpcException {
+    /**
+     * The numeric error code returned from the server.
+     */
+    public final long errorCode;
 
     /**
-     * Constructor creating a new instance.
+     * Constructor RemoteException creates a new RemoteException instance.
      *
-     * @param s of type String is the message
+     * @param message of type String is the message from rhino
+     * @param errorCode of type long is error code from rhino
      */
-    public RpcException(String s) {
-        super(s);
+    public RemoteException(String message, long errorCode) {
+        super(message);
+        this.errorCode = errorCode;
     }
 
     /**
-     * Constructor creating a new instance.
-     *
-     * @param s of type String is the message
-     * @param throwable of type Throwable is the throwable exception
+     * Instantiate a Remote exception with a Response.Error
+     * @param error the error
      */
-    public RpcException(String s, Throwable throwable) {
-        super(s, throwable);
+    public RemoteException(Response.Error error) {
+              this(error.getMessage(), error.getCode());
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + " errorCode: " + errorCode;
     }
 }

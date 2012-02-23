@@ -18,7 +18,6 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
-import com.selerity.narwhal.client.exceptions.DispatchException;
 import com.seleritycorp.cs.standalone.commons.DataListener;
 import com.seleritycorp.cs.standalone.commons.StartStop;
 import com.seleritycorp.cs.standalone.commons.logging.DoesLoggingImpl;

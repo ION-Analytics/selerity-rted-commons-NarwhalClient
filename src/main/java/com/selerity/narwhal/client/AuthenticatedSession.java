@@ -12,9 +12,6 @@
 
 package com.selerity.narwhal.client;
 
-import com.selerity.narwhal.client.exceptions.DispatchException;
-import com.selerity.narwhal.client.exceptions.RemoteException;
-import com.selerity.narwhal.client.exceptions.RpcException;
 import com.seleritycorp.cs.standalone.commons.DataListener;
 import com.seleritycorp.cs.standalone.commons.StartStop;
 import com.selerity.narwhal.client.methods.CS;

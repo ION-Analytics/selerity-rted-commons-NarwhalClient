@@ -10,34 +10,29 @@
  * removed from the software by any user thereof.
  */
 
-package com.selerity.narwhal.client.exceptions;
+package com.selerity.narwhal.client;
 
 /**
- * When a method failed to dispatch.
+ * Exception making a Narwhal RPC call.
  */
-public class DispatchException extends RpcException {
+public class RpcException extends Exception {
 
     /**
-     * Constructor DispatchException creates a new DispatchException instance.
+     * Constructor creating a new instance.
      *
-     * @param s of type String
+     * @param s of type String is the message
      */
-    public DispatchException(String s) {
+    public RpcException(String s) {
         super(s);
     }
 
     /**
-     * Constructor DispatchException creates a new DispatchException instance.
+     * Constructor creating a new instance.
      *
-     * @param s of type String
-     * @param throwable of type Throwable
+     * @param s of type String is the message
+     * @param throwable of type Throwable is the throwable exception
      */
-    public DispatchException(String s, Throwable throwable) {
+    public RpcException(String s, Throwable throwable) {
         super(s, throwable);
-    }
-
-    @Override
-    public String toString() {
-        return this.getMessage() + (getCause() == null ? "" : ": " + getCause().toString());
     }
 }

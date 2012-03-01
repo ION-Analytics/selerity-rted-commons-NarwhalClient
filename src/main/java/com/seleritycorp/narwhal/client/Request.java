@@ -12,8 +12,6 @@
 
 package com.seleritycorp.narwhal.client;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -22,7 +20,7 @@ import java.util.UUID;
 public class Request {
     private final String method;
     private final Object[] params;
-    private final Map<String,Object> header = new HashMap<>();
+    private final Header header;
     private final String id = UUID.randomUUID().toString();
     
     /**
@@ -35,15 +33,8 @@ public class Request {
     public Request(Session session, String method, Object... params) {
         this.method = method;
         this.params = (params != null ? params : new Object[0]);
-        if (session.getUsername() != null) {
-            header.put("user", session.getUsername());
-        }
-        if (session.getToken() != null) {
-            header.put("token", session.getToken());
-        }
-        header.put("canStream",true);
-        header.put("client", session.getClient());
-        header.put("mode", (session.getExtensions() ? "extension" : "core"));
+        header = new Header(session);
+
     }
 
     /**
@@ -80,10 +71,78 @@ public class Request {
      * @param token the token
      */
     public void setToken(String token) {
-        if (token != null) {
-            header.put("token",token);
-        } else {
-            header.remove("token");
+        header.setToken(token);
+    }
+
+    /**
+     * The request header.
+     */
+    public static class Header {
+        private String user;
+        private String token;
+        private String client;
+        private String mode;
+        private boolean canStream;
+
+        public Header() {
+            setCanStream(true);
+        }
+
+        public Header(final Session session) {
+            this();
+            if (session.getUsername() != null) {
+                setUser(session.getUsername());
+            }
+            if (session.getToken() != null) {
+                setToken(session.getToken());
+            }
+            setClient(session.getClient());
+            setMode(session.getExtensions() ? "extension" : "core");
+        }
+
+        public String getUser() {
+            return user;
+        }
+
+        public void setUser(String user) {
+            this.user = user;
+        }
+
+        public String getToken() {
+            return token;
+        }
+
+        public void setToken(String token) {
+            this.token = token;
+        }
+
+        public String getClient() {
+            return client;
+        }
+
+        public void setClient(String client) {
+            this.client = client;
+        }
+
+        public String getMode() {
+            return mode;
+        }
+
+        public void setMode(String mode) {
+            this.mode = mode;
+        }
+
+        public boolean getCanStream() {
+            return canStream;
+        }
+
+        public void setCanStream(boolean canStream) {
+            this.canStream = canStream;
+        }
+
+        @Override
+        public String toString() {
+            return Session.toJson(this);
         }
     }
 }

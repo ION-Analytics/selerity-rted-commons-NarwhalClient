@@ -20,9 +20,9 @@
 
     <dependencies>
         <dependency>
-                <groupId>com.seleritycorp.cs.standalone</groupId>
-                <artifactId>Commons</artifactId>
-                <version>1.1-SNAPSHOT</version>
+            <groupId>com.seleritycorp.cs.standalone</groupId>
+            <artifactId>Commons</artifactId>
+            <version>1.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -141,6 +141,19 @@
                             <exclude>**/*IntegrationTest.java</exclude>
                         </excludes>
                     </configuration>
+                </plugin>
+                <!-- Create a Source Jar -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>

@@ -10,7 +10,7 @@
  * removed from the software by any user thereof.
  */
 
-package com.selerity.narwhal.client;
+package com.seleritycorp.narwhal.client;
 
 /**
  * Exception making a Narwhal RPC call.

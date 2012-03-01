@@ -1,4 +1,4 @@
-package com.selerity.narwhal.client;
+package com.seleritycorp.narwhal.client;
 
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonWriter;

@@ -1,4 +1,4 @@
-package com.selerity.narwhal.client;
+package com.seleritycorp.narwhal.client;
 
 import com.seleritycorp.cs.standalone.commons.logging.DoesLoggingImpl;
 import org.junit.Test;

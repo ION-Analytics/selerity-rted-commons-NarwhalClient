@@ -1,11 +1,11 @@
-package com.selerity.narwhal.client;
+package com.seleritycorp.narwhal.client;
 
 import com.seleritycorp.cs.standalone.commons.DataListener;
 import com.seleritycorp.cs.standalone.commons.StartStop;
 import com.seleritycorp.cs.standalone.commons.logging.DoesLoggingImpl;
-import  com.selerity.narwhal.client.methods.CS;
-import  com.selerity.narwhal.client.methods.BDS;
-import  com.selerity.narwhal.client.methods.OBS;
+import  com.seleritycorp.narwhal.client.methods.CS;
+import  com.seleritycorp.narwhal.client.methods.BDS;
+import  com.seleritycorp.narwhal.client.methods.OBS;
 import org.junit.Ignore;
 import org.junit.Test;
 

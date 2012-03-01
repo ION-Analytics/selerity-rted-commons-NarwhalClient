@@ -10,15 +10,14 @@
  * removed from the software by any user thereof.
  */
 
-package com.selerity.narwhal.client.methods;
+package com.seleritycorp.narwhal.client.methods;
 
 /**
- * Methods called from ObSub service
+ * Methods called from Core Services
  */
-public interface OBS {
-    String AUTHENTICATE = CS.AUTHENTICATE;
-    String INVALIDATE = CS.INVALIDATE;
-    String PING = "PingHandler.ping";
-    String HEART_BEAT = "HeartbeatHandler.getHeartbeats";
-    String SUBSCRIBE = "ObservationHandler.subscribe";
+public interface CS {
+    String AUTHENTICATE = "AuthenticationHandler.authenticate";
+    String INVALIDATE = "AuthenticationHandler.invalidate";
+    String SERVER_TIME = "ConfigurationHandler.getServerTime";
+    String GET_OBSERVABLE = "ObservableHandler.findById";
 }

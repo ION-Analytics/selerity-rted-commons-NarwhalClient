@@ -10,11 +10,11 @@
  * removed from the software by any user thereof.
  */
 
-package com.selerity.narwhal.client;
+package com.seleritycorp.narwhal.client;
 
 import com.seleritycorp.cs.standalone.commons.DataListener;
 import com.seleritycorp.cs.standalone.commons.StartStop;
-import com.selerity.narwhal.client.methods.CS;
+import com.seleritycorp.narwhal.client.methods.CS;
 
 import java.net.MalformedURLException;
 import java.util.Date;

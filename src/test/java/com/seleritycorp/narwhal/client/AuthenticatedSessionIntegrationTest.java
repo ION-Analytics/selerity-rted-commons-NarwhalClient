@@ -1,7 +1,7 @@
-package com.selerity.narwhal.client;
+package com.seleritycorp.narwhal.client;
 
 import com.seleritycorp.cs.standalone.commons.logging.DoesLoggingImpl;
-import com.selerity.narwhal.client.methods.CS;
+import com.seleritycorp.narwhal.client.methods.CS;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertFalse;

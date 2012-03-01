@@ -10,34 +10,38 @@
  * removed from the software by any user thereof.
  */
 
-package com.selerity.narwhal.client;
+package com.seleritycorp.narwhal.client;
 
 /**
- * When a method failed to dispatch.
+ * Exception from the remote service.
  */
-public class DispatchException extends RpcException {
+public class RemoteException extends RpcException {
+    /**
+     * The numeric error code returned from the server.
+     */
+    public final long errorCode;
 
     /**
-     * Constructor DispatchException creates a new DispatchException instance.
+     * Constructor RemoteException creates a new RemoteException instance.
      *
-     * @param s of type String
+     * @param message of type String is the message from rhino
+     * @param errorCode of type long is error code from rhino
      */
-    public DispatchException(String s) {
-        super(s);
+    public RemoteException(String message, long errorCode) {
+        super(message);
+        this.errorCode = errorCode;
     }
 
     /**
-     * Constructor DispatchException creates a new DispatchException instance.
-     *
-     * @param s of type String
-     * @param throwable of type Throwable
+     * Instantiate a Remote exception with a Response.Error
+     * @param error the error
      */
-    public DispatchException(String s, Throwable throwable) {
-        super(s, throwable);
+    public RemoteException(Response.Error error) {
+              this(error.getMessage(), error.getCode());
     }
 
     @Override
     public String toString() {
-        return this.getMessage() + (getCause() == null ? "" : ": " + getCause().toString());
+        return super.toString() + " errorCode: " + errorCode;
     }
 }

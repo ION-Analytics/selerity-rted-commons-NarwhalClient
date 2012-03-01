@@ -10,7 +10,7 @@
  * removed from the software by any user thereof.
  */
 
-package com.selerity.narwhal.client;
+package com.seleritycorp.narwhal.client;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

@@ -10,7 +10,7 @@
  * removed from the software by any user thereof.
  */
 
-package com.selerity.narwhal.client.methods;
+package com.seleritycorp.narwhal.client.methods;
 
 /**
  * Methods called from bulk data service

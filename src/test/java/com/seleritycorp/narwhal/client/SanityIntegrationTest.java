@@ -1,7 +1,7 @@
-package com.selerity.narwhal.client;
+package com.seleritycorp.narwhal.client;
 
-import com.selerity.narwhal.client.methods.CS;
-import com.selerity.narwhal.client.methods.OBS;
+import com.seleritycorp.narwhal.client.methods.CS;
+import com.seleritycorp.narwhal.client.methods.OBS;
 import org.junit.Test;
 
 import static junit.framework.Assert.*;

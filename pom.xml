@@ -142,18 +142,16 @@
                         </excludes>
                     </configuration>
                 </plugin>
-                <!-- Create a Source Jar -->
+                <!-- Assembly -->
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-source-plugin</artifactId>
-                    <executions>
-                        <execution>
-                            <id>attach-sources</id>
-                            <goals>
-                                <goal>jar</goal>
-                            </goals>
-                        </execution>
-                    </executions>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>2.3</version>
+                    <configuration>
+                        <formats><format>zip</format></formats>
+                        <descriptorRefs>
+                            <descriptorRef>src</descriptorRef>
+                        </descriptorRefs>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>

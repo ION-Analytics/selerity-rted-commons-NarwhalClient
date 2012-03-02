@@ -18,10 +18,13 @@ import java.util.UUID;
  * Represents an out going JSON RPC Narwhal request.
  */
 public class Request {
-    private final String method;
-    private final Object[] params;
-    private final Header header;
-    private String id = UUID.randomUUID().toString();
+    private String method;
+    private Object[] params;
+    private Header header;
+    private String id;
+
+    public Request() {
+    }
 
     /**
      *
@@ -29,9 +32,10 @@ public class Request {
      * @param params
      */
     public Request(String method, Object[] params) {
+        this();
+        id = UUID.randomUUID().toString();
         this.method = method;
         this.params = (params != null ? params : new Object[0]);
-        header = new Header();
     }
 
     /**
@@ -43,6 +47,7 @@ public class Request {
      */
     public Request(Session session, String method, Object... params) {
         this(method, params);
+        header = new Header();
         if (session.getUsername() != null) {
             header.setUser(session.getUsername());
         }
@@ -61,6 +66,10 @@ public class Request {
         return method;
     }
 
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
     /**
      * The array of argument objects.
      * @return the arguments
@@ -69,12 +78,20 @@ public class Request {
         return params;
     }
 
+    public void setParams(Object[] params) {
+        this.params = params;
+    }
+
     /**
      * The Request id.
      * @return the id
      */
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Override
@@ -92,6 +109,10 @@ public class Request {
 
     public Header getHeader() {
         return header;
+    }
+
+    public void setHeader(Header header) {
+        this.header = header;
     }
 
     /**

@@ -21,8 +21,19 @@ public class Request {
     private final String method;
     private final Object[] params;
     private final Header header;
-    private final String id = UUID.randomUUID().toString();
-    
+    private String id = UUID.randomUUID().toString();
+
+    /**
+     *
+     * @param method
+     * @param params
+     */
+    public Request(String method, Object[] params) {
+        this.method = method;
+        this.params = (params != null ? params : new Object[0]);
+        header = new Header();
+    }
+
     /**
      * Constructor Request creates a new Request instance.
      *
@@ -31,10 +42,15 @@ public class Request {
      * @param params of type Object[]
      */
     public Request(Session session, String method, Object... params) {
-        this.method = method;
-        this.params = (params != null ? params : new Object[0]);
-        header = new Header(session);
-
+        this(method, params);
+        if (session.getUsername() != null) {
+            header.setUser(session.getUsername());
+        }
+        if (session.getToken() != null) {
+            header.setToken(session.getToken());
+        }
+        header.setClient(session.getClient());
+        header.setMode(session.getExtensions() ? "extension" : "core");
     }
 
     /**
@@ -74,6 +90,10 @@ public class Request {
         header.setToken(token);
     }
 
+    public Header getHeader() {
+        return header;
+    }
+
     /**
      * The request header.
      */
@@ -86,18 +106,6 @@ public class Request {
 
         public Header() {
             setCanStream(true);
-        }
-
-        public Header(final Session session) {
-            this();
-            if (session.getUsername() != null) {
-                setUser(session.getUsername());
-            }
-            if (session.getToken() != null) {
-                setToken(session.getToken());
-            }
-            setClient(session.getClient());
-            setMode(session.getExtensions() ? "extension" : "core");
         }
 
         public String getUser() {

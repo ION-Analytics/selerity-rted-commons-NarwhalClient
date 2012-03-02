@@ -19,6 +19,7 @@ public class Response {
     private String id = null;
     private Object result = null;
     private Error error = null;
+    private Header header = null;
 
 
     public void setId(String id) {
@@ -54,7 +55,43 @@ public class Response {
         return Session.toJson(this);
     }
 
-    public class Error {
+    public void setHeader(Header header) {
+        this.header = header;
+    }
+
+    /**
+     * Optional Response Header.
+     */
+    public static class Header {
+        private String resultType;
+        private Boolean more = false;
+
+        public String getResultType() {
+            return resultType;
+        }
+
+        public void setResultType(String resultType) {
+            this.resultType = resultType;
+        }
+
+        public Boolean getMore() {
+            return more;
+        }
+
+        public void setMore(Boolean more) {
+            this.more = more;
+        }
+
+        @Override
+        public String toString() {
+            return Session.toJson(this);
+        }
+    }
+
+    /**
+     * Response Error if needed.
+     */
+    public static class Error {
         private int code;
         private String message;
 

@@ -21,13 +21,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by IntelliJ IDEA.
- * User: haowang
- * Date: 2/23/12
- * Time: 1:12 PM
- * To change this template use File | Settings | File Templates.
- */
 public class SessionTest extends DoesLoggingImpl{
     @Test
     public void testParamValidation1() throws Exception {

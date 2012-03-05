@@ -342,10 +342,10 @@ public class Session extends DoesLoggingImpl {
      * Reads responses from a connection sending them to the listener until the connection closes.
      */
     private class ResponseReader implements Runnable, StartStop {
-        final private URLConnection connection;
-        final private DataListener<Response> listener;
-        final private TypeAdapter<Response> responseTypeAdapter;
-        final private AtomicInteger alive = new AtomicInteger(0);
+        private final URLConnection connection;
+        private final DataListener<Response> listener;
+        private final TypeAdapter<Response> responseTypeAdapter;
+        private final AtomicInteger alive = new AtomicInteger(0);
 
         public ResponseReader(URLConnection connection, DataListener<Response> listener, TypeAdapter<Response> responseTypeAdapter) {
             this.connection = connection;
@@ -355,7 +355,7 @@ public class Session extends DoesLoggingImpl {
 
         @Override
         public void start() throws Exception {
-            while(alive.get() == 0) {
+            while (alive.get() == 0) {
                 TimeUnit.MILLISECONDS.sleep(5);
             }
         }

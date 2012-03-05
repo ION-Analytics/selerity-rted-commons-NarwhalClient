@@ -28,13 +28,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import static junit.framework.Assert.*;
 
 
-/**
- * Created by IntelliJ IDEA.
- * User: haowang
- * Date: 2/22/12
- * Time: 7:01 PM
- * To change this template use File | Settings | File Templates.
- */
 public class SessionIntegrationTest extends DoesLoggingImpl implements DataListener<Response>{
     private static final int RESPONSES = 2;
     private AtomicBoolean complete = new AtomicBoolean(false);

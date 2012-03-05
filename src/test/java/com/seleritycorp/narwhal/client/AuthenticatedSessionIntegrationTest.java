@@ -20,13 +20,7 @@ import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 
-/**
- * Created by IntelliJ IDEA.
- * User: haowang
- * Date: 2/22/12
- * Time: 6:46 PM
- * To change this template use File | Settings | File Templates.
- */
+
 public class AuthenticatedSessionIntegrationTest extends DoesLoggingImpl{
         @Test
     public void testAuthenticate() throws Exception {

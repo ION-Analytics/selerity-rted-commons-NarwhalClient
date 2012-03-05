@@ -22,13 +22,7 @@ import java.io.StringWriter;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by IntelliJ IDEA.
- * User: haowang
- * Date: 2/22/12
- * Time: 4:47 PM
- * To change this template use File | Settings | File Templates.
- */
+
 public class RequestTest extends DoesLoggingImpl{
 
     private Session session = null;

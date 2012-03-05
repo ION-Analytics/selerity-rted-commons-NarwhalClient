@@ -14,7 +14,6 @@ package com.seleritycorp.narwhal.client.examples;
 
 import com.seleritycorp.cs.standalone.commons.DataListener;
 import com.seleritycorp.cs.standalone.commons.logging.DoesLoggingImpl;
-import com.seleritycorp.narwhal.client.examples.Config;
 import com.seleritycorp.narwhal.client.Request;
 import com.seleritycorp.narwhal.client.Response;
 import com.seleritycorp.narwhal.client.Session;
@@ -55,7 +54,7 @@ public final class HearBeatListener extends DoesLoggingImpl implements DataListe
     @Override
     public void receive(Response response) {
 
-        getLogger().info("Response: [" + new Date() + "]: " + response);
+        getLogger().info("Response: [" + new Date() + "]: " + (Double)response.getResult());
         count--;
         if (count == 0) {
             complete.set(true);

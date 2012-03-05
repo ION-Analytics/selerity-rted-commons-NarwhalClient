@@ -145,13 +145,25 @@
                 <!-- Assembly -->
                 <plugin>
                     <artifactId>maven-assembly-plugin</artifactId>
-                    <version>2.3</version>
-                    <configuration>
-                        <formats><format>zip</format></formats>
-                        <descriptorRefs>
-                            <descriptorRef>src</descriptorRef>
-                        </descriptorRefs>
-                    </configuration>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.seleritycorp.narwhal.client.examples.HearBeatListener</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>jar-with-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 </plugin>
             </plugins>
         </pluginManagement>

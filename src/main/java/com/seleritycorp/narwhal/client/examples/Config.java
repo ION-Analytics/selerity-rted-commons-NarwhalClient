@@ -19,13 +19,6 @@ import java.io.InputStream;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-/**
- * Created by IntelliJ IDEA.
- * User: haowang
- * Date: 3/5/12
- * Time: 2:08 PM
- * To change this template use File | Settings | File Templates.
- */
 public enum Config {
     USER,
     PASSWORD,

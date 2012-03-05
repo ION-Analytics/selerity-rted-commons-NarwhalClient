@@ -18,23 +18,17 @@ import com.seleritycorp.narwhal.client.Request;
 import com.seleritycorp.narwhal.client.Response;
 import com.seleritycorp.narwhal.client.Session;
 import com.seleritycorp.narwhal.client.methods.BDS;
+import gnu.getopt.Getopt;
 
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-/**
- * Created by IntelliJ IDEA.
- * User: haowang
- * Date: 3/5/12
- * Time: 12:49 PM
- * To change this template use File | Settings | File Templates.
- */
-public final class HearBeatListener extends DoesLoggingImpl implements DataListener<Response> {
+public final class HeartBeatListener extends DoesLoggingImpl implements DataListener<Response> {
     private AtomicBoolean complete = new AtomicBoolean(false);
     private int count;
 
-    public HearBeatListener(int count) {
+    public HeartBeatListener(int count) {
         this.count = count;
     }
 
@@ -67,11 +61,25 @@ public final class HearBeatListener extends DoesLoggingImpl implements DataListe
     }
 
     public static void main(final String[] args) throws Exception {
-        if(args.length != 1) {
-            System.out.println("Invalid number of input!");
-            return;
+        int count = 0;
+
+        Getopt getopt = new Getopt("HeartBeatListener", args, "c:");
+        int c;
+        while ((c = getopt.getopt()) != -1) {
+            switch(c) {
+                case 'c':
+                    count = Integer.parseInt(getopt.getOptarg());
+                    break;
+                case '?':
+                    System.out.println("Options:");
+                    System.out.println("-c                           Number of times to write the counter.");
+                    return;
+            }
         }
-        final HearBeatListener hearBeatListener= new HearBeatListener(Integer.parseInt(args[0]));
-        hearBeatListener.listen();
+
+        if(count != 0) {
+            final HeartBeatListener hearBeatListener= new HeartBeatListener(count);
+            hearBeatListener.listen();
+        }
     }
 }

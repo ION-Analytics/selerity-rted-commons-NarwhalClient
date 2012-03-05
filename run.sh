@@ -12,5 +12,5 @@ if [ ! -f target/${APP}-jar-with-dependencies.jar ]; then
 	echo done.
 fi
 
-java -jar target/${APP}-jar-with-dependencies.jar $1
+java -jar target/${APP}-jar-with-dependencies.jar $*
 

@@ -48,7 +48,7 @@ public final class HeartBeatListener extends DoesLoggingImpl implements DataList
     @Override
     public void receive(Response response) {
 
-        getLogger().info("Response: [" + new Date() + "]: " + (Double)response.getResult());
+        getLogger().info("Response: [" + new Date() + "]: " + (Double) response.getResult());
         count--;
         if (count == 0) {
             complete.set(true);
@@ -77,8 +77,8 @@ public final class HeartBeatListener extends DoesLoggingImpl implements DataList
             }
         }
 
-        if(count != 0) {
-            final HeartBeatListener hearBeatListener= new HeartBeatListener(count);
+        if (count != 0) {
+            final HeartBeatListener hearBeatListener = new HeartBeatListener(count);
             hearBeatListener.listen();
         }
     }

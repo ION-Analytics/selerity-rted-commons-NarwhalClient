@@ -50,13 +50,18 @@ public class Response {
         return error != null;
     }
 
+    public void setHeader(Header header) {
+        this.header = header;
+    }
+
+    public Header getHeader() {
+        return header;
+    }
+
+
     @Override
     public String toString() {
         return Session.toJson(this);
-    }
-
-    public void setHeader(Header header) {
-        this.header = header;
     }
 
     /**

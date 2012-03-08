@@ -32,7 +32,7 @@ public enum Config {
     private static final Properties PROPERTIES;
 
     static {
-        final String properties = System.getProperty("config.properties","config.properties");
+        final String properties = System.getProperty("config.properties", "config.properties");
         PROPERTIES = new Properties();
         try {
             InputStream stream = IOUtilities.getResourceAsStream(properties);

@@ -13,6 +13,7 @@
 package com.seleritycorp.narwhal.client.examples;
 
 import com.seleritycorp.cs.standalone.commons.DataListener;
+import com.seleritycorp.cs.standalone.commons.EnumMapPropertyFile;
 import com.seleritycorp.cs.standalone.commons.logging.DoesLoggingImpl;
 import com.seleritycorp.narwhal.client.Request;
 import com.seleritycorp.narwhal.client.Response;
@@ -25,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class HeartBeatListener extends DoesLoggingImpl implements DataListener<Response> {
+    private EnumMapPropertyFile<Property> config = new EnumMapPropertyFile<>(Property.class);
     private AtomicBoolean complete = new AtomicBoolean(false);
     private int count;
 
@@ -33,7 +35,7 @@ public final class HeartBeatListener extends DoesLoggingImpl implements DataList
     }
 
     public void listen() throws Exception {
-        Session session = new Session(Config.getProperty(Config.SERVER_BDS), Config.getProperty(Config.USER), Config.getProperty(Config.CLIENT));
+        Session session = new Session(config.get(Property.SERVER_BDS), config.get(Property.USER), config.get(Property.CLIENT));
 
         complete.set(false);
         Request request = new Request(session, BDS.HEART_BEAT, count, TimeUnit.SECONDS.toMillis(2L));

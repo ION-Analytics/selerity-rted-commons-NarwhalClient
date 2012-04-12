@@ -13,11 +13,12 @@
 package com.seleritycorp.narwhal.client;
 
 import com.seleritycorp.cs.standalone.commons.DataListener;
+import com.seleritycorp.cs.standalone.commons.EnumMapPropertyFile;
 import com.seleritycorp.cs.standalone.commons.StartStop;
 import com.seleritycorp.cs.standalone.commons.logging.DoesLoggingImpl;
-import  com.seleritycorp.narwhal.client.methods.CS;
-import  com.seleritycorp.narwhal.client.methods.BDS;
-import  com.seleritycorp.narwhal.client.methods.OBS;
+import com.seleritycorp.narwhal.client.methods.BDS;
+import com.seleritycorp.narwhal.client.methods.CS;
+import com.seleritycorp.narwhal.client.methods.OBS;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -25,17 +26,20 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.seleritycorp.cs.standalone.commons.Utilities.consoleBanner;
 import static junit.framework.Assert.*;
+import static org.junit.Assume.assumeNotNull;
 
 
 public class SessionIntegrationTest extends DoesLoggingImpl implements DataListener<Response>{
+    private EnumMapPropertyFile<Property> config = new EnumMapPropertyFile<Property>(Property.class, "test.properties");
     private static final int RESPONSES = 2;
     private AtomicBoolean complete = new AtomicBoolean(false);
     private int count;
 
     @Test
     public void testDispatch() throws Exception {
-        Session session = new Session(Config.getProperty(Config.SERVER_CS), Config.getProperty(Config.USER), Config.getProperty(Config.CLIENT));
+        Session session = new Session(config.get(Property.SERVER_CS), config.get(Property.USER), config.get(Property.CLIENT));
         Request request = new Request(session, CS.SERVER_TIME, "UTC");
         Response response = session.dispatch(request);
         assertNotNull(response);
@@ -47,7 +51,7 @@ public class SessionIntegrationTest extends DoesLoggingImpl implements DataListe
     public void testStreamedResponses() throws Exception {
         Request request;
 
-        Session session = new Session(Config.getProperty(Config.SERVER_BDS), Config.getProperty(Config.USER), Config.getProperty(Config.CLIENT));
+        Session session = new Session(config.get(Property.SERVER_BDS), config.get(Property.USER), config.get(Property.CLIENT));
 
         count = RESPONSES;
         complete.set(false);
@@ -65,9 +69,9 @@ public class SessionIntegrationTest extends DoesLoggingImpl implements DataListe
         Request request;
         Response response;
 
-        Session session = new Session(Config.getProperty(Config.SERVER_OBS), Config.getProperty(Config.USER), Config.getProperty(Config.CLIENT));
-        session.setDebug(true);
-        request = new Request(session, OBS.AUTHENTICATE, Config.getProperty(Config.USER), Config.getProperty(Config.PASSWORD));
+        Session session = new Session(config.get(Property.SERVER_OBS), config.get(Property.USER), config.get(Property.CLIENT));
+        session.setDebug(Boolean.parseBoolean(config.get(Property.RPC_DEBUG)));
+        request = new Request(session, OBS.AUTHENTICATE, config.get(Property.USER), config.get(Property.PASSWORD));
         response = session.dispatch(request);
         assertFalse(response.hasError());
         session.setToken(response.getResult().toString());
@@ -87,12 +91,25 @@ public class SessionIntegrationTest extends DoesLoggingImpl implements DataListe
         assertFalse(response.hasError());
     }
 
+    // THis requires a keystore setup and command line args
+    @Ignore
+    @Test
+    public void testHTTPS() throws Exception {
+        consoleBanner("HTTPS");
+        assumeNotNull(config.get(Property.HTTPS_AUTH));
+        Session session = new Session(config.get(Property.HTTPS_AUTH), config.get(Property.USER), config.get(Property.CLIENT));
+        session.setDebug(Boolean.parseBoolean(config.get(Property.RPC_DEBUG)));
+        Request request = new Request(session, OBS.AUTHENTICATE, config.get(Property.USER), config.get(Property.PASSWORD));
+        Response response = session.dispatch(request);
+        assertFalse(response.hasError());
+    }
+
     @Ignore
     @Test
     public void testBDS() throws Exception {
         Request request;
 
-        Session session = new Session(Config.getProperty(Config.SERVER_BDS), Config.getProperty(Config.USER), Config.getProperty(Config.CLIENT));
+        Session session = new Session(config.get(Property.SERVER_BDS), config.get(Property.USER), config.get(Property.CLIENT));
         session.setDebug(true);
         request = new Request(session, BDS.GET_ALL_TAGS);
         Response response = session.dispatch(request);

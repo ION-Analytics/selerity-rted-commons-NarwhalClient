@@ -12,21 +12,22 @@
 
 package com.seleritycorp.narwhal.client;
 
+import com.seleritycorp.cs.standalone.commons.EnumMapPropertyFile;
 import com.seleritycorp.cs.standalone.commons.logging.DoesLoggingImpl;
 import com.seleritycorp.narwhal.client.methods.CS;
 import org.junit.Test;
 
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.*;
 
 
-public class AuthenticatedSessionIntegrationTest extends DoesLoggingImpl{
-        @Test
+public class AuthenticatedSessionIntegrationTest extends DoesLoggingImpl {
+    private EnumMapPropertyFile<Property> config = new EnumMapPropertyFile<Property>(Property.class, "test.properties");
+
+    @Test
     public void testAuthenticate() throws Exception {
-        AuthenticatedSession session = new AuthenticatedSession(Config.getProperty(Config.SERVER_CS), Config.getProperty(Config.USER), Config.getProperty(Config.CLIENT));
+        AuthenticatedSession session = new AuthenticatedSession(config.get(Property.SERVER_CS), config.get(Property.USER), config.get(Property.CLIENT));
         assertNotNull(session);
-        session.setPassword(Config.getProperty(Config.PASSWORD));
+        session.setPassword(config.get(Property.PASSWORD));
 
         Request request;
         Response response;

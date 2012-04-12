@@ -22,6 +22,8 @@ import com.seleritycorp.cs.standalone.commons.DataListener;
 import com.seleritycorp.cs.standalone.commons.StartStop;
 import com.seleritycorp.cs.standalone.commons.logging.DoesLoggingImpl;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLSession;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -47,6 +49,15 @@ public class Session extends DoesLoggingImpl {
     private TimeUnit readTimeoutUnit = TimeUnit.MINUTES;
     private String token = null;
     private boolean debug = false;
+
+    static {
+        // Allow for localhost
+        HttpsURLConnection.setDefaultHostnameVerifier(new javax.net.ssl.HostnameVerifier() {
+            public boolean verify(String hostname, SSLSession sslSession) {
+                return "localhost".equals(hostname);
+            }
+        });
+    }
 
     /**
      * Constructor Session creates a new Session instance. Defaults to non-extension mode.
@@ -74,6 +85,7 @@ public class Session extends DoesLoggingImpl {
         this.extensions = extensions;
         this.client = client;
         this.username = username;
+
     }
 
     /**

@@ -12,6 +12,7 @@
 
 package com.seleritycorp.narwhal.client;
 
+import com.seleritycorp.cs.standalone.commons.EnumMapPropertyFile;
 import com.seleritycorp.narwhal.client.methods.CS;
 import com.seleritycorp.narwhal.client.methods.OBS;
 import org.junit.Test;
@@ -20,22 +21,24 @@ import static junit.framework.Assert.*;
 
 
 public class SanityIntegrationTest {
+    private EnumMapPropertyFile<Property> config = new EnumMapPropertyFile<Property>(Property.class, "test.properties");
+
 
     @Test
     public void testSanity() throws Exception {
 
-        Session session = new Session(Config.getProperty(Config.SERVER_CS), Config.getProperty(Config.USER), Config.getProperty(Config.CLIENT));
+        Session session = new Session(config.get(Property.SERVER_CS), config.get(Property.USER), config.get(Property.CLIENT));
 //        session.setDebug(true);
 
         // create an authentication user
-        Request request = new Request(session, CS.AUTHENTICATE, Config.getProperty(Config.USER), "foo");
+        Request request = new Request(session, CS.AUTHENTICATE, config.get(Property.USER), "foo");
         Response response = session.dispatch(request);
 
         assertNotNull(response);
         assertTrue(response.hasError());
         assertEquals(-1000, response.getError().getCode());
 
-        request = new Request(session, CS.AUTHENTICATE, Config.getProperty(Config.USER), Config.getProperty(Config.PASSWORD));
+        request = new Request(session, CS.AUTHENTICATE, config.get(Property.USER), config.get(Property.PASSWORD));
         response = session.dispatch(request);
 
         assertNotNull(response);
@@ -54,8 +57,8 @@ public class SanityIntegrationTest {
     @Test
     public void testArgo() throws Exception {
 
-        Session session = new Session(Config.getProperty(Config.SERVER_OBS), Config.getProperty(Config.USER), Config.getProperty(Config.CLIENT));
-//        session.setDebug(true);
+        Session session = new Session(config.get(Property.SERVER_OBS), config.get(Property.USER), config.get(Property.CLIENT));
+        //session.setDebug(true);
 
         Request request = new Request(session, OBS.PING);
         Response response = session.dispatch(request);

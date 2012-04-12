@@ -14,6 +14,7 @@ package com.seleritycorp.narwhal.client;
 
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonWriter;
+import com.seleritycorp.cs.standalone.commons.EnumMapPropertyFile;
 import com.seleritycorp.cs.standalone.commons.logging.DoesLoggingImpl;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,19 +25,19 @@ import static org.junit.Assert.*;
 
 
 public class RequestTest extends DoesLoggingImpl{
-
+    private EnumMapPropertyFile<Property> config = new EnumMapPropertyFile<Property>(Property.class, "test.properties");
     private Session session = null;
 
     @Before
     public void setup() throws Exception {
         if(session == null) {
-            session = new Session("http://localhost:8080", "testuser1", "test");
+            session = new Session("http://localhost:8080", config.get(Property.USER), config.get(Property.CLIENT));
         }
     }
 
     @Test
     public void testParamValidation1() throws Exception {
-        Request request = new Request(session, "testuser1", "test");
+        Request request = new Request(session, config.get(Property.USER), config.get(Property.CLIENT));
         assertNotNull(request);
     }
 
@@ -48,7 +49,7 @@ public class RequestTest extends DoesLoggingImpl{
 
     @Test(expected = NullPointerException.class)
     public void testParamValidation3() throws Exception {
-        Request request = new Request(null, "testuser1", "test");
+        Request request = new Request(null, config.get(Property.USER), config.get(Property.CLIENT));
         assertTrue("A NullPointerException was expected, but was not thrown", false);
     }
 

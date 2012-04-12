@@ -12,25 +12,27 @@
 
 package com.seleritycorp.narwhal.client;
 
+import com.seleritycorp.cs.standalone.commons.EnumMapPropertyFile;
 import com.seleritycorp.cs.standalone.commons.logging.DoesLoggingImpl;
 import org.junit.Test;
 
 import java.net.MalformedURLException;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class SessionTest extends DoesLoggingImpl{
+    private EnumMapPropertyFile<Property> config = new EnumMapPropertyFile<Property>(Property.class, "test.properties");
+
     @Test
     public void testParamValidation1() throws Exception {
-        Session session = new Session("http://localhost:8080", "testuser1", "test");
+        Session session = new Session("http://localhost:8080", config.get(Property.USER), config.get(Property.CLIENT));
         assertNotNull(session);
     }
 
     @Test
     public void testParamValidation2() throws Exception {
-        Session session = new Session("http://localhost:8080", "testuser1", "test", true);
+        Session session = new Session("http://localhost:8080", config.get(Property.USER), config.get(Property.CLIENT), true);
         assertNotNull(session);
     }
 
@@ -42,7 +44,7 @@ public class SessionTest extends DoesLoggingImpl{
 
     @Test(expected = MalformedURLException.class)
     public void testParamValidation4() throws Exception {
-        Session session = new Session(null, "testuser1", "test");
+        Session session = new Session(null, config.get(Property.USER), config.get(Property.CLIENT));
         assertTrue("A MalformedURLException was expected, but was not thrown", false);
     }
 }

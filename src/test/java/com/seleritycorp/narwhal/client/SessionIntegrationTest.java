@@ -69,25 +69,28 @@ public class SessionIntegrationTest extends DoesLoggingImpl implements DataListe
         Request request;
         Response response;
 
-        Session session = new Session(config.get(Property.SERVER_OBS), config.get(Property.USER), config.get(Property.CLIENT));
-        session.setDebug(Boolean.parseBoolean(config.get(Property.RPC_DEBUG)));
-        request = new Request(session, OBS.AUTHENTICATE, config.get(Property.USER), config.get(Property.PASSWORD));
-        response = session.dispatch(request);
+        Session csSession = new Session(config.get(Property.SERVER_CS), config.get(Property.USER), config.get(Property.CLIENT));
+        csSession.setDebug(Boolean.parseBoolean(config.get(Property.RPC_DEBUG)));
+        request = new Request(csSession, OBS.AUTHENTICATE, config.get(Property.USER), config.get(Property.PASSWORD));
+        response = csSession.dispatch(request);
         assertFalse(response.hasError());
-        session.setToken(response.getResult().toString());
+        csSession.setToken(response.getResult().toString());
 
+        Session obsSession = new Session(config.get(Property.SERVER_OBS), config.get(Property.USER), config.get(Property.CLIENT));
+        obsSession.setToken(csSession.getToken());
         count = RESPONSES;
         complete.set(false);
-        request = new Request(session, OBS.HEART_BEAT, count + 2, TimeUnit.SECONDS.toMillis(2L));
-        StartStop startStop = session.dispatch(request, this);
+        request = new Request(obsSession, OBS.HEART_BEAT, count + 2, TimeUnit.SECONDS.toMillis(2L));
+        StartStop startStop = obsSession.dispatch(request, this);
         startStop.start();
         while (!complete.get() && startStop.isAlive() ) {
             TimeUnit.SECONDS.sleep(1L);
         }
         startStop.stop();
-        assertEquals(0,count);
-        request = new Request(session, OBS.INVALIDATE);
-        response = session.dispatch(request);
+        assertEquals(0, count);
+
+        request = new Request(csSession, OBS.INVALIDATE);
+        response = csSession.dispatch(request);
         assertFalse(response.hasError());
     }
 

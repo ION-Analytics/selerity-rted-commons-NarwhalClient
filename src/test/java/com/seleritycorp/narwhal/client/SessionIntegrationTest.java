@@ -19,6 +19,8 @@ import com.seleritycorp.cs.standalone.commons.logging.DoesLoggingImpl;
 import com.seleritycorp.narwhal.client.methods.BDS;
 import com.seleritycorp.narwhal.client.methods.CS;
 import com.seleritycorp.narwhal.client.methods.OBS;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -31,14 +33,15 @@ import static junit.framework.Assert.*;
 import static org.junit.Assume.assumeNotNull;
 
 
-public class SessionIntegrationTest extends DoesLoggingImpl implements DataListener<Response>{
-    private EnumMapPropertyFile<Property> config = new EnumMapPropertyFile<Property>(Property.class, "test.properties");
+public class SessionIntegrationTest extends DoesLoggingImpl implements DataListener<Response> {
+    private EnumMapPropertyFile<Property> config = new EnumMapPropertyFile<>(Property.class, "test.properties");
     private static final int RESPONSES = 2;
     private AtomicBoolean complete = new AtomicBoolean(false);
     private int count;
 
     @Test
     public void testDispatch() throws Exception {
+        consoleBanner(this,"testDispatch");
         Session session = new Session(config.get(Property.SERVER_CS), config.get(Property.USER), config.get(Property.CLIENT));
         Request request = new Request(session, CS.SERVER_TIME, "UTC");
         Response response = session.dispatch(request);
@@ -49,6 +52,7 @@ public class SessionIntegrationTest extends DoesLoggingImpl implements DataListe
 
     @Test
     public void testStreamedResponses() throws Exception {
+        consoleBanner(this, "testStreamedResponse");
         Request request;
 
         Session session = new Session(config.get(Property.SERVER_BDS), config.get(Property.USER), config.get(Property.CLIENT));
@@ -66,17 +70,20 @@ public class SessionIntegrationTest extends DoesLoggingImpl implements DataListe
 
     @Test
     public void testObsSub() throws Exception {
+        consoleBanner(this, "testObsSub");
+
         Request request;
         Response response;
 
         Session csSession = new Session(config.get(Property.SERVER_CS), config.get(Property.USER), config.get(Property.CLIENT));
         csSession.setDebug(Boolean.parseBoolean(config.get(Property.RPC_DEBUG)));
-        request = new Request(csSession, OBS.AUTHENTICATE, config.get(Property.USER), config.get(Property.PASSWORD));
+        request = new Request(csSession, CS.AUTHENTICATE, config.get(Property.USER), config.get(Property.PASSWORD));
         response = csSession.dispatch(request);
         assertFalse(response.hasError());
         csSession.setToken(response.getResult().toString());
 
         Session obsSession = new Session(config.get(Property.SERVER_OBS), config.get(Property.USER), config.get(Property.CLIENT));
+        obsSession.setDebug(csSession.isDebug());
         obsSession.setToken(csSession.getToken());
         count = RESPONSES;
         complete.set(false);
@@ -89,7 +96,7 @@ public class SessionIntegrationTest extends DoesLoggingImpl implements DataListe
         startStop.stop();
         assertEquals(0, count);
 
-        request = new Request(csSession, OBS.INVALIDATE);
+        request = new Request(csSession, CS.INVALIDATE);
         response = csSession.dispatch(request);
         assertFalse(response.hasError());
     }
@@ -102,7 +109,7 @@ public class SessionIntegrationTest extends DoesLoggingImpl implements DataListe
         assumeNotNull(config.get(Property.HTTPS_AUTH));
         Session session = new Session(config.get(Property.HTTPS_AUTH), config.get(Property.USER), config.get(Property.CLIENT));
         session.setDebug(Boolean.parseBoolean(config.get(Property.RPC_DEBUG)));
-        Request request = new Request(session, OBS.AUTHENTICATE, config.get(Property.USER), config.get(Property.PASSWORD));
+        Request request = new Request(session, CS.AUTHENTICATE, config.get(Property.USER), config.get(Property.PASSWORD));
         Response response = session.dispatch(request);
         assertFalse(response.hasError());
     }
@@ -122,6 +129,9 @@ public class SessionIntegrationTest extends DoesLoggingImpl implements DataListe
     public void receive(Response response) {
 
         getLogger().info("Response: [" + new Date() + "]: " + response);
+        if (response.hasError()) {
+            complete.set(true);
+        }
         count--;
         if (count == 0) {
             complete.set(true);

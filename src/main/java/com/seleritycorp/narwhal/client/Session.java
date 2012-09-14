@@ -167,6 +167,9 @@ public class Session extends DoesLoggingImpl {
      */
     public void setDebug(boolean debug) {
         this.debug = debug;
+        if (debug) {
+            getLogger().info(this.toString());
+        }
     }
 
     /**
@@ -221,7 +224,7 @@ public class Session extends DoesLoggingImpl {
         final Gson gson = GSON_BUILDER.create();
 
         if (debug) {
-            getLogger().fine("Request " + request.toString());
+            getLogger().info("Request " + request.toString());
         }
 
         URLConnection connection;

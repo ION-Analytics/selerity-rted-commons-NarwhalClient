@@ -16,8 +16,6 @@ package com.seleritycorp.narwhal.client.methods;
  * Methods called from ObSub service
  */
 public interface OBS {
-    String AUTHENTICATE = CS.AUTHENTICATE;
-    String INVALIDATE = CS.INVALIDATE;
     String PING = "PingHandler.ping";
     String HEART_BEAT = "HeartbeatHandler.getHeartbeats";
     String SUBSCRIBE = "ObservationHandler.subscribe";

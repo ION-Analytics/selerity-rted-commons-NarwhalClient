@@ -21,7 +21,7 @@ import static junit.framework.Assert.*;
 
 
 public class AuthenticatedSessionIntegrationTest extends DoesLoggingImpl {
-    private EnumMapPropertyFile<Property> config = new EnumMapPropertyFile<Property>(Property.class, "test.properties");
+    private EnumMapPropertyFile<Property> config = new EnumMapPropertyFile<>(Property.class, "test.properties");
 
     @Test
     public void testAuthenticate() throws Exception {

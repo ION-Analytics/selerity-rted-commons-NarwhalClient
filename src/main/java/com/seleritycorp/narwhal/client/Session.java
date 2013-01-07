@@ -1,5 +1,5 @@
 /*
- * (c) Copyright Selerity, Inc. 2009-2012. All rights reserved. This source code is confidential
+ * (c) Copyright Selerity, Inc. 2009-2013. All rights reserved. This source code is confidential
  * and proprietary information of Selerity Inc. and may be used only by a recipient designated
  * by and for the purposes permitted by Selerity Inc. in writing.  Reproduction of, dissemination
  * of, modifications to or creation of derivative works from this source code, whether in source
@@ -34,6 +34,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 // TODO: Add support for fall back servers
+
 /**
  * A class representing an rpc session.
  */
@@ -215,7 +216,7 @@ public class Session extends DoesLoggingImpl {
     /**
      * Dispatches a request, creating a thread to listen for responses which it sends along to the listener.
      *
-     * @param request The request to dispatch
+     * @param request  The request to dispatch
      * @param listener the listener to receive the responses
      * @return a control reference to the reader
      * @throws DispatchException if the request can not be dispatched
@@ -322,7 +323,7 @@ public class Session extends DoesLoggingImpl {
     /**
      * Inefficient but simple way to convert an object to it's JSON string representation.
      *
-     * @param o  the object to convert to JSON
+     * @param o the object to convert to JSON
      * @return the resultant JSON
      */
     public static String toJson(Object o) {
@@ -333,8 +334,8 @@ public class Session extends DoesLoggingImpl {
     /**
      * Writes a request to the given connection.
      *
-     * @param connection the connection to write to
-     * @param request the request to write
+     * @param connection         the connection to write to
+     * @param request            the request to write
      * @param requestTypeAdapter the type adapter to use
      * @throws IOException if the write does not succeed
      */
@@ -377,6 +378,7 @@ public class Session extends DoesLoggingImpl {
 
         /**
          * This should be true after start, and false before endOfData.
+         *
          * @return is this alive
          */
         @Override

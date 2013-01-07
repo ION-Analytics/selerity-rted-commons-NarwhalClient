@@ -1,5 +1,5 @@
 /*
- * (c) Copyright Selerity, Inc. 2009-2012. All rights reserved. This source code is confidential
+ * (c) Copyright Selerity, Inc. 2009-2013. All rights reserved. This source code is confidential
  * and proprietary information of Selerity Inc. and may be used only by a recipient designated
  * by and for the purposes permitted by Selerity Inc. in writing.  Reproduction of, dissemination
  * of, modifications to or creation of derivative works from this source code, whether in source
@@ -24,13 +24,13 @@ import java.io.StringWriter;
 import static org.junit.Assert.*;
 
 
-public class RequestTest extends DoesLoggingImpl{
+public class RequestTest extends DoesLoggingImpl {
     private EnumMapPropertyFile<Property> config = new EnumMapPropertyFile<Property>(Property.class, "test.properties");
     private Session session = null;
 
     @Before
     public void setup() throws Exception {
-        if(session == null) {
+        if (session == null) {
             session = new Session("http://localhost:8080", config.get(Property.USER), config.get(Property.CLIENT));
         }
     }
@@ -67,7 +67,7 @@ public class RequestTest extends DoesLoggingImpl{
         TypeAdapter<Request> typeAdapter = Session.GSON_BUILDER.create().getAdapter(Request.class);
         StringWriter stringWriter = new StringWriter();
         JsonWriter jsonWriter = new JsonWriter(stringWriter);
-        typeAdapter.write(jsonWriter,request);
+        typeAdapter.write(jsonWriter, request);
         jsonWriter.flush();
         jsonWriter.close();
         stringWriter.flush();

@@ -1,5 +1,5 @@
 /*
- * (c) Copyright Selerity, Inc. 2009-2012. All rights reserved. This source code is confidential
+ * (c) Copyright Selerity, Inc. 2009-2013. All rights reserved. This source code is confidential
  * and proprietary information of Selerity Inc. and may be used only by a recipient designated
  * by and for the purposes permitted by Selerity Inc. in writing.  Reproduction of, dissemination
  * of, modifications to or creation of derivative works from this source code, whether in source
@@ -27,7 +27,6 @@ public class Request {
     }
 
     /**
-     *
      * @param method
      * @param params
      */
@@ -42,8 +41,8 @@ public class Request {
      * Constructor Request creates a new Request instance.
      *
      * @param session of type Session
-     * @param method of type Method
-     * @param params of type Object[]
+     * @param method  of type Method
+     * @param params  of type Object[]
      */
     public Request(Session session, String method, Object... params) {
         this(method, params);
@@ -60,6 +59,7 @@ public class Request {
 
     /**
      * Retrieve the method field of the request.
+     *
      * @return then method name
      */
     public String getMethod() {
@@ -72,6 +72,7 @@ public class Request {
 
     /**
      * The array of argument objects.
+     *
      * @return the arguments
      */
     public Object[] getParams() {
@@ -84,6 +85,7 @@ public class Request {
 
     /**
      * The Request id.
+     *
      * @return the id
      */
     public String getId() {
@@ -101,6 +103,7 @@ public class Request {
 
     /**
      * Set the token on a request explicitly.
+     *
      * @param token the token
      */
     public void setToken(String token) {

@@ -1,5 +1,5 @@
 /*
- * (c) Copyright Selerity, Inc. 2009-2012. All rights reserved. This source code is confidential
+ * (c) Copyright Selerity, Inc. 2009-2013. All rights reserved. This source code is confidential
  * and proprietary information of Selerity Inc. and may be used only by a recipient designated
  * by and for the purposes permitted by Selerity Inc. in writing.  Reproduction of, dissemination
  * of, modifications to or creation of derivative works from this source code, whether in source
@@ -29,7 +29,7 @@ public class DispatchException extends RpcException {
     /**
      * Constructor DispatchException creates a new DispatchException instance.
      *
-     * @param s of type String
+     * @param s         of type String
      * @param throwable of type Throwable
      */
     public DispatchException(String s, Throwable throwable) {

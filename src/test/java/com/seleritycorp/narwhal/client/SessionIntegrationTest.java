@@ -1,5 +1,5 @@
 /*
- * (c) Copyright Selerity, Inc. 2009-2012. All rights reserved. This source code is confidential
+ * (c) Copyright Selerity, Inc. 2009-2013. All rights reserved. This source code is confidential
  * and proprietary information of Selerity Inc. and may be used only by a recipient designated
  * by and for the purposes permitted by Selerity Inc. in writing.  Reproduction of, dissemination
  * of, modifications to or creation of derivative works from this source code, whether in source
@@ -19,8 +19,6 @@ import com.seleritycorp.cs.standalone.commons.logging.DoesLoggingImpl;
 import com.seleritycorp.narwhal.client.methods.BDS;
 import com.seleritycorp.narwhal.client.methods.CS;
 import com.seleritycorp.narwhal.client.methods.OBS;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -41,7 +39,7 @@ public class SessionIntegrationTest extends DoesLoggingImpl implements DataListe
 
     @Test
     public void testDispatch() throws Exception {
-        consoleBanner(this,"testDispatch");
+        consoleBanner(this, "testDispatch");
         Session session = new Session(config.get(Property.SERVER_CS), config.get(Property.USER), config.get(Property.CLIENT));
         Request request = new Request(session, CS.SERVER_TIME, "UTC");
         Response response = session.dispatch(request);
@@ -65,7 +63,7 @@ public class SessionIntegrationTest extends DoesLoggingImpl implements DataListe
         while (!complete.get()) {
             TimeUnit.SECONDS.sleep(1L);
         }
-        assertEquals(0,count);
+        assertEquals(0, count);
     }
 
     @Test
@@ -90,7 +88,7 @@ public class SessionIntegrationTest extends DoesLoggingImpl implements DataListe
         request = new Request(obsSession, OBS.HEART_BEAT, count + 2, TimeUnit.SECONDS.toMillis(2L));
         StartStop startStop = obsSession.dispatch(request, this);
         startStop.start();
-        while (!complete.get() && startStop.isAlive() ) {
+        while (!complete.get() && startStop.isAlive()) {
             TimeUnit.SECONDS.sleep(1L);
         }
         startStop.stop();

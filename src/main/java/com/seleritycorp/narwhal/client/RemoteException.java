@@ -1,5 +1,5 @@
 /*
- * (c) Copyright Selerity, Inc. 2009-2012. All rights reserved. This source code is confidential
+ * (c) Copyright Selerity, Inc. 2009-2013. All rights reserved. This source code is confidential
  * and proprietary information of Selerity Inc. and may be used only by a recipient designated
  * by and for the purposes permitted by Selerity Inc. in writing.  Reproduction of, dissemination
  * of, modifications to or creation of derivative works from this source code, whether in source
@@ -24,7 +24,7 @@ public class RemoteException extends RpcException {
     /**
      * Constructor RemoteException creates a new RemoteException instance.
      *
-     * @param message of type String is the message from rhino
+     * @param message   of type String is the message from rhino
      * @param errorCode of type long is error code from rhino
      */
     public RemoteException(String message, long errorCode) {
@@ -34,10 +34,11 @@ public class RemoteException extends RpcException {
 
     /**
      * Instantiate a Remote exception with a Response.Error
+     *
      * @param error the error
      */
     public RemoteException(Response.Error error) {
-              this(error.getMessage(), error.getCode());
+        this(error.getMessage(), error.getCode());
     }
 
     @Override

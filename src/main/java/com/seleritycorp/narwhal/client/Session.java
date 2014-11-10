@@ -246,6 +246,42 @@ public class Session extends DoesLoggingImpl {
         thread.start();
         return streamer;
     }
+    
+    
+    /**
+     * Dispatches a request, creating a thread to listen for responses which it sends along to the listener.
+     * @param <T>
+     *
+     * @param request  The request to dispatch
+     * @param listener the listener to receive the responses
+     * @return a control reference to the reader
+     * @throws DispatchException if the request can not be dispatched
+     */
+    public <T> StartStop dispatch(Request request, DataListener<T> listener, Class<T> typeOfResponse) throws DispatchException {
+        final Gson gson = GSON_BUILDER.create();
+
+        if (debug) {
+            getLogger().info("Request " + request.toString());
+        }
+
+        URLConnection connection;
+
+        try {
+            connection = serverURL.openConnection();
+            TypeAdapter<Request> requestTypeAdapter = gson.getAdapter(Request.class);
+            writeRequest(connection, request, requestTypeAdapter);
+        } catch (IOException e) {
+            throw new DispatchException("Remote dispatch failed", e);
+        }
+
+        // Read the response(s)
+        TypeAdapter<T> responseTypeAdapter = gson.getAdapter(typeOfResponse);
+        ResponseReader streamer = new ResponseReader(connection, listener, responseTypeAdapter);
+        Thread thread = new Thread(streamer);
+        thread.setDaemon(true);
+        thread.start();
+        return streamer;
+    }
 
 
     @Override
@@ -356,14 +392,15 @@ public class Session extends DoesLoggingImpl {
 
     /**
      * Reads responses from a connection sending them to the listener until the connection closes.
+     * @param <R>
      */
-    private class ResponseReader implements Runnable, StartStop {
+    private class ResponseReader<R> implements Runnable, StartStop {
         private final URLConnection connection;
-        private final DataListener<Response> listener;
-        private final TypeAdapter<Response> responseTypeAdapter;
+        private final DataListener<R> listener;
+        private final TypeAdapter<R> responseTypeAdapter;
         private final AtomicInteger alive = new AtomicInteger(0);
 
-        public ResponseReader(URLConnection connection, DataListener<Response> listener, TypeAdapter<Response> responseTypeAdapter) {
+        public ResponseReader(URLConnection connection, DataListener<R> listener, TypeAdapter<R> responseTypeAdapter) {
             this.connection = connection;
             this.listener = listener;
             this.responseTypeAdapter = responseTypeAdapter;
@@ -405,7 +442,7 @@ public class Session extends DoesLoggingImpl {
                     if (jsonReader.peek() == JsonToken.END_DOCUMENT) {
                         break;
                     }
-                    Response response = responseTypeAdapter.read(jsonReader);
+                    R response = responseTypeAdapter.read(jsonReader);
                     listener.receive(response);
                 }
             } catch (IOException io) {

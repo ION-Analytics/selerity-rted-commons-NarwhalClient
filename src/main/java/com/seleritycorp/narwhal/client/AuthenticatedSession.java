@@ -12,11 +12,15 @@
 
 package com.seleritycorp.narwhal.client;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.seleritycorp.cs.standalone.commons.DataListener;
 import com.seleritycorp.cs.standalone.commons.StartStop;
+import com.seleritycorp.narwhal.client.Response.Header;
 import com.seleritycorp.narwhal.client.methods.CS;
 
 import java.net.MalformedURLException;
+import java.util.AbstractMap;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -68,7 +72,15 @@ public class AuthenticatedSession extends Session {
         if (response.hasError()) {
             throw new RemoteException(response.getError());
         }
-        return response.getResult().toString();
+        Header authHeader = response.getHeader();
+        if (authHeader == null) {
+        	// Entitlement Service uses different authentication token format
+        	AbstractMap<String, Object> responseObject = (AbstractMap<String, Object>) response.getResult();
+        	String authenticationToken = responseObject.get("id").toString();
+        	return authenticationToken;
+        } else {
+        	return response.getResult().toString();
+        }
     }
 
     protected void invalidate() {

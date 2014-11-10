@@ -23,7 +23,7 @@
     <artifactId>NarwhalClient</artifactId>
     <packaging>jar</packaging>
     <name>NarwhalClient</name>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.3-SNAPSHOT</version>
     <description>Client code for SeleritySyncAPI</description>
 
     <properties>

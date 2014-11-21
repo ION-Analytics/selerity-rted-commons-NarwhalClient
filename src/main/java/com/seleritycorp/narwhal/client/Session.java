@@ -381,6 +381,7 @@ public class Session extends DoesLoggingImpl {
         connection.setRequestProperty("Accept", "text/plain");
         connection.setRequestProperty("Content-type", "application/json");
         connection.setRequestProperty("User-Agent", getClient());
+        connection.setRequestProperty("Connection", "close");
         connection.setDoOutput(true);
 
         // Send the json

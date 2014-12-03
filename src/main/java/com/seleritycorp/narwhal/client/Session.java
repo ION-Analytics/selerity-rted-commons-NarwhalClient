@@ -44,6 +44,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Session extends DoesLoggingImpl {
     public static final GsonBuilder GSON_BUILDER = new GsonBuilder().serializeNulls().disableHtmlEscaping();
+    private static final ExecutorService streamerExecutor = Executors.newCachedThreadPool();
+    
     private final Boolean extensions;
     private final String client;
     private final URL serverURL;
@@ -55,7 +57,7 @@ public class Session extends DoesLoggingImpl {
     private String token = null;
     private boolean debug = false;
     
-    private final ExecutorService streamerExecutor; 
+     
 
     static {
         // Allow for localhost
@@ -92,7 +94,6 @@ public class Session extends DoesLoggingImpl {
         this.extensions = extensions;
         this.client = client;
         this.username = username;
-        this.streamerExecutor = Executors.newCachedThreadPool();
     }
 
     /**

@@ -24,12 +24,16 @@ import com.seleritycorp.cs.standalone.commons.logging.DoesLoggingImpl;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSession;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -50,6 +54,8 @@ public class Session extends DoesLoggingImpl {
     private TimeUnit readTimeoutUnit = TimeUnit.MINUTES;
     private String token = null;
     private boolean debug = false;
+    
+    private final ExecutorService streamerExecutor; 
 
     static {
         // Allow for localhost
@@ -86,7 +92,7 @@ public class Session extends DoesLoggingImpl {
         this.extensions = extensions;
         this.client = client;
         this.username = username;
-
+        this.streamerExecutor = Executors.newCachedThreadPool();
     }
 
     /**
@@ -241,9 +247,7 @@ public class Session extends DoesLoggingImpl {
         // Read the response(s)
         TypeAdapter<Response> responseTypeAdapter = gson.getAdapter(Response.class);
         ResponseReader streamer = new ResponseReader(connection, listener, responseTypeAdapter);
-        Thread thread = new Thread(streamer);
-        thread.setDaemon(true);
-        thread.start();
+        streamerExecutor.execute(streamer);
         return streamer;
     }
     
@@ -277,9 +281,8 @@ public class Session extends DoesLoggingImpl {
         // Read the response(s)
         TypeAdapter<T> responseTypeAdapter = gson.getAdapter(typeOfResponse);
         ResponseReader streamer = new ResponseReader(connection, listener, responseTypeAdapter);
-        Thread thread = new Thread(streamer);
-        thread.setDaemon(true);
-        thread.start();
+        
+        streamerExecutor.execute(streamer);
         return streamer;
     }
 

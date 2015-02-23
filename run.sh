@@ -1,6 +1,6 @@
 #!/bin/sh
 
-APP=NarwhalClient-1.0.2-SNAPSHOT
+APP=NarwhalClient-1.0.3-SNAPSHOT
 
 if [ ! -f target/${APP}-jar-with-dependencies.jar ]; then
 	/bin/echo -n Building ...

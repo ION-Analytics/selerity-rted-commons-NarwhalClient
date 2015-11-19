@@ -1,5 +1,5 @@
 /*
- * (c) Copyright Selerity, Inc. 2009-2013. All rights reserved. This source code is confidential
+ * (c) Copyright Selerity, Inc. 2009-2015. All rights reserved. This source code is confidential
  * and proprietary information of Selerity Inc. and may be used only by a recipient designated
  * by and for the purposes permitted by Selerity Inc. in writing.  Reproduction of, dissemination
  * of, modifications to or creation of derivative works from this source code, whether in source
@@ -12,17 +12,14 @@
 
 package com.seleritycorp.narwhal.client;
 
-import com.seleritycorp.cs.standalone.commons.EnumMapPropertyFile;
 import com.seleritycorp.narwhal.client.methods.CS;
 import com.seleritycorp.narwhal.client.methods.OBS;
 import org.junit.Test;
 
 import static junit.framework.Assert.*;
 
-
 public class SanityIntegrationTest {
     private EnumMapPropertyFile<Property> config = new EnumMapPropertyFile<Property>(Property.class, "test.properties");
-
 
     @Test
     public void testSanity() throws Exception {

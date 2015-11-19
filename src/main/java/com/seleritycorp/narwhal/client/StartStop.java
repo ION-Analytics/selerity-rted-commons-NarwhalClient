@@ -13,26 +13,12 @@
 package com.seleritycorp.narwhal.client;
 
 /**
- * Exception making a Narwhal RPC call.
+ * Indicates this class supports starting and stopping
  */
-public class RpcException extends Exception {
+public interface StartStop {
+    void start() throws Exception;
 
-    /**
-     * Constructor creating a new instance.
-     *
-     * @param s of type String is the message
-     */
-    public RpcException(String s) {
-        super(s);
-    }
+    void stop() throws Exception;
 
-    /**
-     * Constructor creating a new instance.
-     *
-     * @param s         of type String is the message
-     * @param throwable of type Throwable is the throwable exception
-     */
-    public RpcException(String s, Throwable throwable) {
-        super(s, throwable);
-    }
+    boolean isAlive();
 }

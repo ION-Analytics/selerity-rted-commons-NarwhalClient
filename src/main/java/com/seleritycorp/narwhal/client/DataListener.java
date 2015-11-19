@@ -13,26 +13,18 @@
 package com.seleritycorp.narwhal.client;
 
 /**
- * Exception making a Narwhal RPC call.
+ * Interface indicating you'll receive data of a specified type.
  */
-public class RpcException extends Exception {
+public interface DataListener<T> {
+    /**
+     * Receive an instance of the data.
+     *
+     * @param data an instance of the data
+     */
+    void receive(T data);
 
     /**
-     * Constructor creating a new instance.
-     *
-     * @param s of type String is the message
+     * Indicates no further data.
      */
-    public RpcException(String s) {
-        super(s);
-    }
-
-    /**
-     * Constructor creating a new instance.
-     *
-     * @param s         of type String is the message
-     * @param throwable of type Throwable is the throwable exception
-     */
-    public RpcException(String s, Throwable throwable) {
-        super(s, throwable);
-    }
+    void endOfData();
 }

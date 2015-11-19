@@ -1,5 +1,5 @@
 /*
- * (c) Copyright Selerity, Inc. 2009-2013. All rights reserved. This source code is confidential
+ * (c) Copyright Selerity, Inc. 2009-2015. All rights reserved. This source code is confidential
  * and proprietary information of Selerity Inc. and may be used only by a recipient designated
  * by and for the purposes permitted by Selerity Inc. in writing.  Reproduction of, dissemination
  * of, modifications to or creation of derivative works from this source code, whether in source
@@ -12,15 +12,17 @@
 
 package com.seleritycorp.narwhal.client;
 
-import com.seleritycorp.cs.standalone.commons.EnumMapPropertyFile;
-import com.seleritycorp.cs.standalone.commons.logging.DoesLoggingImpl;
 import com.seleritycorp.narwhal.client.methods.CS;
 import org.junit.Test;
 
+import java.util.logging.Logger;
+
 import static junit.framework.Assert.*;
 
+public class AuthenticatedSessionIntegrationTest {
 
-public class AuthenticatedSessionIntegrationTest extends DoesLoggingImpl {
+    private static final Logger LOGGER = Logger.getLogger(AuthenticatedSessionIntegrationTest.class.getName());
+
     private EnumMapPropertyFile<Property> config = new EnumMapPropertyFile<>(Property.class, "test.properties");
 
     @Test
@@ -36,14 +38,14 @@ public class AuthenticatedSessionIntegrationTest extends DoesLoggingImpl {
         request = new Request(session, CS.SERVER_TIME, "UTC");
         response = session.noAuthDispatch(request);
         assertNotNull(response);
-        getLogger().info(response.toString());
+        LOGGER.info(response.toString());
         assertFalse(response.hasError());
 
         // Now an Auth one
         request = new Request(session, CS.INVALIDATE);
         response = session.dispatch(request);
         assertNotNull(response);
-        getLogger().info(response.toString());
+        LOGGER.info(response.toString());
         assertFalse(response.hasError());
 
         session.disconnect();

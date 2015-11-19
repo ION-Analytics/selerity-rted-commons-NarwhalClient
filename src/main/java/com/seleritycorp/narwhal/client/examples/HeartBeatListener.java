@@ -1,5 +1,5 @@
 /*
- * (c) Copyright Selerity, Inc. 2009-2013. All rights reserved. This source code is confidential
+ * (c) Copyright Selerity, Inc. 2009-2015. All rights reserved. This source code is confidential
  * and proprietary information of Selerity Inc. and may be used only by a recipient designated
  * by and for the purposes permitted by Selerity Inc. in writing.  Reproduction of, dissemination
  * of, modifications to or creation of derivative works from this source code, whether in source
@@ -12,20 +12,19 @@
 
 package com.seleritycorp.narwhal.client.examples;
 
-import com.seleritycorp.cs.standalone.commons.DataListener;
-import com.seleritycorp.cs.standalone.commons.EnumMapPropertyFile;
-import com.seleritycorp.cs.standalone.commons.logging.DoesLoggingImpl;
-import com.seleritycorp.narwhal.client.Request;
-import com.seleritycorp.narwhal.client.Response;
-import com.seleritycorp.narwhal.client.Session;
+import com.seleritycorp.narwhal.client.*;
 import com.seleritycorp.narwhal.client.methods.BDS;
 import gnu.getopt.Getopt;
 
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Logger;
 
-public final class HeartBeatListener extends DoesLoggingImpl implements DataListener<Response> {
+public final class HeartBeatListener implements DataListener<Response> {
+
+    private static final Logger LOGGER = Logger.getLogger(HeartBeatListener.class.getName());
+
     private EnumMapPropertyFile<Property> config = new EnumMapPropertyFile<>(Property.class);
     private AtomicBoolean complete = new AtomicBoolean(false);
     private int count;
@@ -50,7 +49,7 @@ public final class HeartBeatListener extends DoesLoggingImpl implements DataList
     @Override
     public void receive(Response response) {
 
-        getLogger().info("Response: [" + new Date() + "]: " + (Double) response.getResult());
+        LOGGER.info("Response: [" + new Date() + "]: " + (Double) response.getResult());
         count--;
         if (count == 0) {
             complete.set(true);
@@ -59,7 +58,7 @@ public final class HeartBeatListener extends DoesLoggingImpl implements DataList
 
     @Override
     public void endOfData() {
-        getLogger().info("End of responses.");
+        LOGGER.info("End of responses.");
     }
 
     public static void main(final String[] args) throws Exception {

@@ -1,5 +1,5 @@
 /*
- * (c) Copyright Selerity, Inc. 2009-2013. All rights reserved. This source code is confidential
+ * (c) Copyright Selerity, Inc. 2009-2015. All rights reserved. This source code is confidential
  * and proprietary information of Selerity Inc. and may be used only by a recipient designated 
  * by and for the purposes permitted by Selerity Inc. in writing.  Reproduction of, dissemination 
  * of, modifications to or creation of derivative works from this source code, whether in source 
@@ -12,10 +12,6 @@
 
 package com.seleritycorp.narwhal.client;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.seleritycorp.cs.standalone.commons.DataListener;
-import com.seleritycorp.cs.standalone.commons.StartStop;
 import com.seleritycorp.narwhal.client.Response.Header;
 import com.seleritycorp.narwhal.client.methods.CS;
 
@@ -52,7 +48,7 @@ public class AuthenticatedSession extends Session {
         try {
             setToken(authenticate(password));
         } catch (RemoteException re) {
-            getLogger().warning("Authentication refused: " + re);
+            LOGGER.warning("Authentication refused: " + re);
             throw new DispatchException(re.getMessage());
         } catch (RpcException e) {
             throw new DispatchException(e.getMessage());
@@ -88,7 +84,7 @@ public class AuthenticatedSession extends Session {
         try {
             dispatch(request);
         } catch (DispatchException e) {
-            getLogger().warning("Failed invalidating session: " + e);
+            LOGGER.warning("Failed invalidating session: " + e);
         }
     }
 

@@ -1,5 +1,5 @@
 /*
- * (c) Copyright Selerity, Inc. 2009-2013. All rights reserved. This source code is confidential
+ * (c) Copyright Selerity, Inc. 2009-2015. All rights reserved. This source code is confidential
  * and proprietary information of Selerity Inc. and may be used only by a recipient designated
  * by and for the purposes permitted by Selerity Inc. in writing.  Reproduction of, dissemination
  * of, modifications to or creation of derivative works from this source code, whether in source
@@ -18,9 +18,6 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
-import com.seleritycorp.cs.standalone.commons.DataListener;
-import com.seleritycorp.cs.standalone.commons.StartStop;
-import com.seleritycorp.cs.standalone.commons.logging.DoesLoggingImpl;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSession;
@@ -33,16 +30,19 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 
 // TODO: Add support for fall back servers
 
 /**
  * A class representing an rpc session.
  */
-public class Session extends DoesLoggingImpl {
+public class Session {
+
+    public static final Logger LOGGER = Logger.getLogger(Session.class.getName());
+
     public static final GsonBuilder GSON_BUILDER = new GsonBuilder().serializeNulls().disableHtmlEscaping();
     private static final ExecutorService streamerExecutor = Executors.newCachedThreadPool();
     
@@ -176,7 +176,7 @@ public class Session extends DoesLoggingImpl {
     public void setDebug(boolean debug) {
         this.debug = debug;
         if (debug) {
-            getLogger().info(this.toString());
+            LOGGER.info(this.toString());
         }
     }
 
@@ -190,7 +190,7 @@ public class Session extends DoesLoggingImpl {
     public Response dispatch(Request request) throws DispatchException {
         final Gson gson = GSON_BUILDER.create();
         if (debug) {
-            getLogger().info("Request " + request.toString());
+            LOGGER.info("Request " + request.toString());
         }
 
         URLConnection connection = null;
@@ -203,11 +203,11 @@ public class Session extends DoesLoggingImpl {
             TypeAdapter<Response> responseTypeAdapter = gson.getAdapter(Response.class);
             Response response = responseTypeAdapter.read(jsonReader);
             if (debug) {
-                getLogger().info("Response: " + response);
+                LOGGER.info("Response: " + response);
             }
             return response;
         } catch (Exception e) {
-            getLogger().warning("Failed request to " + serverURL + ": " + request);
+            LOGGER.warning("Failed request to " + serverURL + ": " + request);
             throw new DispatchException("Remote dispatch to failed: " + e, e);
         } finally {
             try {
@@ -215,7 +215,7 @@ public class Session extends DoesLoggingImpl {
                     connection.getInputStream().close();
                 }
             } catch (IOException e) {
-                getLogger().warning("URLConnection close issues: " + e);
+                LOGGER.warning("URLConnection close issues: " + e);
             }
         }
     }
@@ -232,7 +232,7 @@ public class Session extends DoesLoggingImpl {
         final Gson gson = GSON_BUILDER.create();
 
         if (debug) {
-            getLogger().info("Request " + request.toString());
+            LOGGER.info("Request " + request.toString());
         }
 
         URLConnection connection;
@@ -266,7 +266,7 @@ public class Session extends DoesLoggingImpl {
         final Gson gson = GSON_BUILDER.create();
 
         if (debug) {
-            getLogger().info("Request " + request.toString());
+            LOGGER.info("Request " + request.toString());
         }
 
         URLConnection connection;
@@ -451,12 +451,12 @@ public class Session extends DoesLoggingImpl {
                     listener.receive(response);
                 }
             } catch (IOException io) {
-                getLogger().warning("IOException: " + io);
+                LOGGER.warning("IOException: " + io);
             } finally {
                 try {
                     connection.getInputStream().close();
                 } catch (IOException e) {
-                    getLogger().warning("URLConnection close issues: " + e);
+                    LOGGER.warning("URLConnection close issues: " + e);
                 }
             }
             stop();

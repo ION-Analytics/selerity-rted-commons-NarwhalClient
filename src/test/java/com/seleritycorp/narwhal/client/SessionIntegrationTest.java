@@ -1,5 +1,5 @@
 /*
- * (c) Copyright Selerity, Inc. 2009-2013. All rights reserved. This source code is confidential
+ * (c) Copyright Selerity, Inc. 2009-2015. All rights reserved. This source code is confidential
  * and proprietary information of Selerity Inc. and may be used only by a recipient designated
  * by and for the purposes permitted by Selerity Inc. in writing.  Reproduction of, dissemination
  * of, modifications to or creation of derivative works from this source code, whether in source
@@ -12,10 +12,6 @@
 
 package com.seleritycorp.narwhal.client;
 
-import com.seleritycorp.cs.standalone.commons.DataListener;
-import com.seleritycorp.cs.standalone.commons.EnumMapPropertyFile;
-import com.seleritycorp.cs.standalone.commons.StartStop;
-import com.seleritycorp.cs.standalone.commons.logging.DoesLoggingImpl;
 import com.seleritycorp.narwhal.client.methods.BDS;
 import com.seleritycorp.narwhal.client.methods.CS;
 import com.seleritycorp.narwhal.client.methods.OBS;
@@ -26,12 +22,11 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static com.seleritycorp.cs.standalone.commons.Utilities.consoleBanner;
 import static junit.framework.Assert.*;
 import static org.junit.Assume.assumeNotNull;
 
 
-public class SessionIntegrationTest extends DoesLoggingImpl implements DataListener<Response> {
+public class SessionIntegrationTest implements DataListener<Response> {
     private EnumMapPropertyFile<Property> config = new EnumMapPropertyFile<>(Property.class, "test.properties");
     private static final int RESPONSES = 2;
     private AtomicBoolean complete = new AtomicBoolean(false);
@@ -39,7 +34,7 @@ public class SessionIntegrationTest extends DoesLoggingImpl implements DataListe
 
     @Test
     public void testDispatch() throws Exception {
-        consoleBanner(this, "testDispatch");
+        System.out.println("\n\n\n=== testDispatch ===\n\n\n");
         Session session = new Session(config.get(Property.SERVER_CS), config.get(Property.USER), config.get(Property.CLIENT));
         Request request = new Request(session, CS.SERVER_TIME, "UTC");
         Response response = session.dispatch(request);
@@ -50,7 +45,7 @@ public class SessionIntegrationTest extends DoesLoggingImpl implements DataListe
 
     @Test
     public void testStreamedResponses() throws Exception {
-        consoleBanner(this, "testStreamedResponse");
+        System.out.println("\n\n\n=== testStreamedResponses ===\n\n\n");
         Request request;
 
         Session session = new Session(config.get(Property.SERVER_BDS), config.get(Property.USER), config.get(Property.CLIENT));
@@ -68,7 +63,7 @@ public class SessionIntegrationTest extends DoesLoggingImpl implements DataListe
 
     @Test
     public void testObsSub() throws Exception {
-        consoleBanner(this, "testObsSub");
+        System.out.println("\n\n\n=== testObsSub ===\n\n\n");
 
         Request request;
         Response response;
@@ -99,11 +94,11 @@ public class SessionIntegrationTest extends DoesLoggingImpl implements DataListe
         assertFalse(response.hasError());
     }
 
-    // THis requires a keystore setup and command line args
+    // This requires a keystore setup and command line args
     @Ignore
     @Test
     public void testHTTPS() throws Exception {
-        consoleBanner("HTTPS");
+        System.out.println("\n\n\n=== testHTTPS ===\n\n\n");
         assumeNotNull(config.get(Property.HTTPS_AUTH));
         Session session = new Session(config.get(Property.HTTPS_AUTH), config.get(Property.USER), config.get(Property.CLIENT));
         session.setDebug(Boolean.parseBoolean(config.get(Property.RPC_DEBUG)));
@@ -116,7 +111,6 @@ public class SessionIntegrationTest extends DoesLoggingImpl implements DataListe
     @Test
     public void testBDS() throws Exception {
         Request request;
-
         Session session = new Session(config.get(Property.SERVER_BDS), config.get(Property.USER), config.get(Property.CLIENT));
         session.setDebug(true);
         request = new Request(session, BDS.GET_ALL_TAGS);
@@ -125,8 +119,7 @@ public class SessionIntegrationTest extends DoesLoggingImpl implements DataListe
 
     @Override
     public void receive(Response response) {
-
-        getLogger().info("Response: [" + new Date() + "]: " + response);
+        System.out.println("Response: [" + new Date() + "]: " + response);
         if (response.hasError()) {
             complete.set(true);
         }
@@ -138,6 +131,6 @@ public class SessionIntegrationTest extends DoesLoggingImpl implements DataListe
 
     @Override
     public void endOfData() {
-        getLogger().info("End of responses.");
+        System.out.println("End of responses.");
     }
 }

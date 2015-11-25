@@ -12,14 +12,23 @@
 
 package com.seleritycorp.narwhal.client.examples;
 
-import com.seleritycorp.narwhal.client.*;
-import com.seleritycorp.narwhal.client.methods.BDS;
-import gnu.getopt.Getopt;
-
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
+
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+
+import com.seleritycorp.narwhal.client.DataListener;
+import com.seleritycorp.narwhal.client.EnumMapPropertyFile;
+import com.seleritycorp.narwhal.client.Request;
+import com.seleritycorp.narwhal.client.Response;
+import com.seleritycorp.narwhal.client.Session;
+import com.seleritycorp.narwhal.client.methods.BDS;
 
 public final class HeartBeatListener implements DataListener<Response> {
 
@@ -64,18 +73,16 @@ public final class HeartBeatListener implements DataListener<Response> {
     public static void main(final String[] args) throws Exception {
         int count = 0;
 
-        Getopt getopt = new Getopt("HeartBeatListener", args, "c:");
-        int c;
-        while ((c = getopt.getopt()) != -1) {
-            switch (c) {
-                case 'c':
-                    count = Integer.parseInt(getopt.getOptarg());
-                    break;
-                case '?':
-                    System.out.println("Options:");
-                    System.out.println("-c                           Number of times to write the counter.");
-                    return;
-            }
+        final Options options = new Options();
+        options.addOption(new Option("c", "c", true, "Number of times to write the counter."));
+
+        CommandLine commandLine = new DefaultParser().parse(options, args);
+        if (commandLine.hasOption("c")) {
+            count = Integer.parseInt(commandLine.getOptionValue("c"));
+        } else {
+            System.out.println("Options:");
+            System.out.println("-c                           Number of times to write the counter.");
+            return;
         }
 
         if (count != 0) {
@@ -83,4 +90,5 @@ public final class HeartBeatListener implements DataListener<Response> {
             hearBeatListener.listen();
         }
     }
+
 }

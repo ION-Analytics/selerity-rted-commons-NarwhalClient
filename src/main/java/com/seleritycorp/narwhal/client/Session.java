@@ -210,13 +210,7 @@ public class Session {
             LOGGER.warning("Failed request to " + serverURL + ": " + request);
             throw new DispatchException("Remote dispatch to failed: " + e, e);
         } finally {
-            try {
-                if (connection != null) {
-                    connection.getInputStream().close();
-                }
-            } catch (IOException e) {
-                LOGGER.warning("URLConnection close issues: " + e);
-            }
+            URLUtilConnection.closeInputStream(connection);
         }
     }
 
@@ -247,7 +241,7 @@ public class Session {
 
         // Read the response(s)
         TypeAdapter<Response> responseTypeAdapter = gson.getAdapter(Response.class);
-        ResponseReader streamer = new ResponseReader(connection, listener, responseTypeAdapter);
+        ResponseReader<Response> streamer = new ResponseReader<>(connection, listener, responseTypeAdapter);
         streamerExecutor.execute(streamer);
         return streamer;
     }
@@ -281,8 +275,8 @@ public class Session {
 
         // Read the response(s)
         TypeAdapter<T> responseTypeAdapter = gson.getAdapter(typeOfResponse);
-        ResponseReader streamer = new ResponseReader(connection, listener, responseTypeAdapter);
-        
+        ResponseReader<T> streamer = new ResponseReader<>(connection, listener, responseTypeAdapter);
+
         streamerExecutor.execute(streamer);
         return streamer;
     }
@@ -453,13 +447,10 @@ public class Session {
             } catch (IOException io) {
                 LOGGER.warning("IOException: " + io);
             } finally {
-                try {
-                    connection.getInputStream().close();
-                } catch (IOException e) {
-                    LOGGER.warning("URLConnection close issues: " + e);
-                }
+                URLUtilConnection.closeInputStream(connection);
             }
             stop();
         }
     }
+
 }

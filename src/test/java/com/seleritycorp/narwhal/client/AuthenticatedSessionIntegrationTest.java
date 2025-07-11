@@ -1,5 +1,5 @@
 /*
- * (c) Copyright Selerity, Inc. 2009-2015. All rights reserved. This source code is confidential
+ * (c) Copyright Selerity, Inc. 2009-2019. All rights reserved. This source code is confidential
  * and proprietary information of Selerity Inc. and may be used only by a recipient designated
  * by and for the purposes permitted by Selerity Inc. in writing.  Reproduction of, dissemination
  * of, modifications to or creation of derivative works from this source code, whether in source
@@ -9,7 +9,6 @@
  * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE. This notice may not be
  * removed from the software by any user thereof.
  */
-
 package com.seleritycorp.narwhal.client;
 
 import com.seleritycorp.narwhal.client.methods.CS;
@@ -17,11 +16,10 @@ import org.junit.Test;
 
 import java.util.logging.Logger;
 
-import static junit.framework.Assert.*;
+import static org.junit.Assert.*;
 
 public class AuthenticatedSessionIntegrationTest {
-
-    private static final Logger LOGGER = Logger.getLogger(AuthenticatedSessionIntegrationTest.class.getName());
+    private static final Logger log = Logger.getLogger(AuthenticatedSessionIntegrationTest.class.getName());
 
     private EnumMapPropertyFile<Property> config = new EnumMapPropertyFile<>(Property.class, "test.properties");
 
@@ -38,17 +36,18 @@ public class AuthenticatedSessionIntegrationTest {
         request = new Request(session, CS.SERVER_TIME, "UTC");
         response = session.noAuthDispatch(request);
         assertNotNull(response);
-        LOGGER.info(response.toString());
+        log.info(response.toString());
         assertFalse(response.hasError());
 
         // Now an Auth one
         request = new Request(session, CS.INVALIDATE);
         response = session.dispatch(request);
         assertNotNull(response);
-        LOGGER.info(response.toString());
+        log.info(response.toString());
         assertFalse(response.hasError());
 
         session.disconnect();
         assertNull(session.getToken());
     }
+
 }

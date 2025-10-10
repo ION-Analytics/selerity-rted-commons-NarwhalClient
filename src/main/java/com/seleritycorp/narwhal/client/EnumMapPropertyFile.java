@@ -14,7 +14,6 @@ import java.util.logging.Logger;
  * A Map with an Enum key that loads its string values from a properties file.
  */
 public class EnumMapPropertyFile<K extends Enum<K>> extends EnumMap<K, String> {
-
     private static final Logger LOGGER = Logger.getLogger(EnumMapPropertyFile.class.getName());
 
     public EnumMapPropertyFile(Class<K> kClass) {

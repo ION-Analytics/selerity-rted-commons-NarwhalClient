@@ -1,5 +1,5 @@
 /*
- * (c) Copyright Selerity, Inc. 2009-2015. All rights reserved. This source code is confidential
+ * (c) Copyright Selerity, Inc. 2009-2019. All rights reserved. This source code is confidential
  * and proprietary information of Selerity Inc. and may be used only by a recipient designated
  * by and for the purposes permitted by Selerity Inc. in writing.  Reproduction of, dissemination
  * of, modifications to or creation of derivative works from this source code, whether in source
@@ -9,7 +9,6 @@
  * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE. This notice may not be
  * removed from the software by any user thereof.
  */
-
 package com.seleritycorp.narwhal.client.examples;
 
 import java.util.Date;
@@ -18,7 +17,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
@@ -31,8 +29,7 @@ import com.seleritycorp.narwhal.client.Session;
 import com.seleritycorp.narwhal.client.methods.BDS;
 
 public final class HeartBeatListener implements DataListener<Response> {
-
-    private static final Logger LOGGER = Logger.getLogger(HeartBeatListener.class.getName());
+    private static final Logger log = Logger.getLogger(HeartBeatListener.class.getName());
 
     private EnumMapPropertyFile<Property> config = new EnumMapPropertyFile<>(Property.class);
     private AtomicBoolean complete = new AtomicBoolean(false);
@@ -58,7 +55,7 @@ public final class HeartBeatListener implements DataListener<Response> {
     @Override
     public void receive(Response response) {
 
-        LOGGER.info("Response: [" + new Date() + "]: " + (Double) response.getResult());
+        log.info("Response: [" + new Date() + "]: " + (Double) response.getResult());
         count--;
         if (count == 0) {
             complete.set(true);
@@ -67,7 +64,7 @@ public final class HeartBeatListener implements DataListener<Response> {
 
     @Override
     public void endOfData() {
-        LOGGER.info("End of responses.");
+        log.info("End of responses.");
     }
 
     public static void main(final String[] args) throws Exception {

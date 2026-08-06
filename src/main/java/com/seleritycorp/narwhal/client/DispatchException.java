@@ -15,22 +15,12 @@ package com.seleritycorp.narwhal.client;
  * When a method failed to dispatch.
  */
 public class DispatchException extends RpcException {
+    private static final long serialVersionUID = 1L;
 
-    /**
-     * Constructor DispatchException creates a new DispatchException instance.
-     *
-     * @param s of type String
-     */
     public DispatchException(String s) {
         super(s);
     }
 
-    /**
-     * Constructor DispatchException creates a new DispatchException instance.
-     *
-     * @param s         of type String
-     * @param throwable of type Throwable
-     */
     public DispatchException(String s, Throwable throwable) {
         super(s, throwable);
     }

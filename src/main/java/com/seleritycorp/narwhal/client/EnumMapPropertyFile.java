@@ -14,7 +14,9 @@ import java.util.logging.Logger;
  * A Map with an Enum key that loads its string values from a properties file.
  */
 public class EnumMapPropertyFile<K extends Enum<K>> extends EnumMap<K, String> {
-    private static final Logger LOGGER = Logger.getLogger(EnumMapPropertyFile.class.getName());
+    private static final long serialVersionUID = 1L;
+
+    private static final Logger log = Logger.getLogger(EnumMapPropertyFile.class.getName());
 
     public EnumMapPropertyFile(Class<K> kClass) {
         this(kClass, System.getProperty("config.properties", "config.properties"));
@@ -27,12 +29,12 @@ public class EnumMapPropertyFile<K extends Enum<K>> extends EnumMap<K, String> {
         try {
             InputStream stream = getResourceAsStream(properties);
             if (stream == null) {
-                LOGGER.warning("Failed finding " + properties);
+                log.warning("Failed finding " + properties);
             } else {
                 loaded.load(getResourceAsStream(properties));
             }
         } catch (IOException e) {
-            LOGGER.warning("Failed loading " + properties + ": " + e);
+            log.warning("Failed loading " + properties + ": " + e);
         }
 
         Set<K> values = EnumSet.allOf(kClass);
@@ -54,9 +56,10 @@ public class EnumMapPropertyFile<K extends Enum<K>> extends EnumMap<K, String> {
         try {
             stream = new FileInputStream(resource);
         } catch (FileNotFoundException e) {
-            LOGGER.warning("Resource " + resource + " not found: " + e);
+            log.warning("Resource " + resource + " not found: " + e);
             return null;
         }
         return stream;
     }
+
 }

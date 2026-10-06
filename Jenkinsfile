@@ -10,10 +10,10 @@ pipeline {
     environment {
         // JDK and Maven are set by githubCheckout with defaults
         // Override here if needed:
-        // jdk = 'JDK 21 (Corretto, Local)'
+        // jdk = 'JDK 17 (Corretto, Local)'
         // maven = 'Maven 3.9'
 
-        jdk = 'OpenJDK 1.8'
+        jdk = 'JDK 8 (Corretto, Local)'
         version = "unversioned"
         buildDocker = false
         buildDockerRepo = ''
@@ -50,7 +50,7 @@ pipeline {
                 cleanLocalM2Repository()
 
                 script {
-                    causeShortDesc = currentBuild.getBuildCauses()[0].shortDescription
+                    causeShortDesc = currentBuild.getBuildCauses() ? currentBuild.getBuildCauses()[0]?.shortDescription : 'No cause specified'
                     committer = sh(returnStdout: true, script: 'git log --format="%ae" -1 | grep -o --perl ".*(?=@)"').trim()
                     shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
                     gitBranch = env.BRANCH_NAME
@@ -62,7 +62,7 @@ pipeline {
                         currentBuild.displayName = "PR #${env.CHANGE_ID} Build $BUILD_NUMBER"
                     } else {
                         version = readMavenPom().getVersion()
-                        currentBuild.displayName = "Build ${version}.$BUILD_NUMBER." + shortCommit
+                        currentBuild.displayName = "Build ${version}.${BUILD_NUMBER}.${shortCommit}"
                     }
                 }
 
@@ -106,8 +106,9 @@ pipeline {
             steps {
                 configFileProvider([configFile(fileId: 'maven-settings', variable: 'MAVEN_SETTINGS')]) {
                     checkVulnerabilities()
+                    analyzeDependencies()
                     publishThirdPartyReport()
-                    publishTestResultsAndConverage()
+                    publishTestResultsAndCoverage()
                 }
             }
         }
@@ -134,7 +135,7 @@ pipeline {
                 enabledForFailure: true,
                 healthy: 5,
                 minimumSeverity: 'HIGH',
-                tools: [java(), mavenConsole()],
+                tools: [java(), mavenConsole(), spotBugs(reportEncoding: 'UTF-8', useRankAsPriority: true)],
                 unhealthy: 15
             )
         }
